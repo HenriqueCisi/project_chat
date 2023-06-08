@@ -9,24 +9,24 @@ class ChatMockService implements ChatService {
   static final List<ChatMessage> _msgs = [
     ChatMessage(
         id: '1',
-        text: 'Teste',
+        text: 'Rapaizz',
         createdAt: DateTime.now(),
-        userId: '123',
-        userName: 'Teste',
+        userId: '100',
+        userName: 'Henrique',
         userImageURL: 'assets/images/avatar.png'),
     ChatMessage(
         id: '2',
-        text: 'Teste2',
+        text: 'Qual foi?',
         createdAt: DateTime.now(),
-        userId: '1234',
+        userId: '101',
         userName: 'Teste2',
         userImageURL: 'assets/images/avatar.png'),
     ChatMessage(
-        id: '2',
-        text: 'Teste3',
+        id: '3',
+        text: 'Uepa',
         createdAt: DateTime.now(),
-        userId: '123',
-        userName: 'Teste3',
+        userId: '100',
+        userName: 'Henrique',
         userImageURL: 'assets/images/avatar.png'),
   ];
 
