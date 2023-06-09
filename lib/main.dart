@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ChatNotificationService())
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         home: const AuthOrAppPage(),
         debugShowCheckedModeBanner: false,
+        routes: {
+
+        },
       ),
     );
   }
