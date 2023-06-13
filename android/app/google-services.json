@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "369558558597",
+    "project_id": "chat-coder-c5924",
+    "storage_bucket": "chat-coder-c5924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369558558597:android:4c0a7d4c5d4a7ffcc196ec",
+        "android_client_info": {
+          "package_name": "br.com.henrique.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "369558558597-kju7a9e3r6hor3h53g9u2e1h9kchkdme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxDxty1NpIPgbEysAXAuQSxxVJOnvkuZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "369558558597-kju7a9e3r6hor3h53g9u2e1h9kchkdme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
