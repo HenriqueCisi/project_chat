@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         home: const AuthOrAppPage(),
         debugShowCheckedModeBanner: false,
-        routes: {
+        // routes: {
 
-        },
+        // },
       ),
     );
   }
