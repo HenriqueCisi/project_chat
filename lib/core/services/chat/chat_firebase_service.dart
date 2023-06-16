@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_chat/core/models/chat_message.dart';
@@ -14,27 +13,48 @@ class ChatFirebaseService implements ChatService {
     return const Stream<List<ChatMessage>>.empty();
   }
 
+  @override
   Future<ChatMessage?> save(String text, ChatUser user) async {
     final store = FirebaseFirestore.instance;
 
+    final msg = ChatMessage(
+        id: '',
+        text: text,
+        createdAt: DateTime.now(),
+        userId: user.id,
+        userName: user.name,
+        userImageURL: user.imageURL);
+
     // CHATMESSAGE -> MAP <STRING, DYNAMIC>
-    final docRef = await store.collection('chat').add({
-      ' text': text,
-      'createdAt': DateTime.now().toIso8601String(),
-      ' userId': user.id,
-      ' userName': user.name,
-      'userImageURL': user.imageURL
-    });
+    final docRef = await store
+        .collection('chat')
+        .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
+        .add(msg);
 
     final doc = await docRef.get();
-    final data = doc.data()!;
+    return doc.data()!;
+  }
 
+  // MAP <STRING, DYNAMIC> -> CHATMESSAGE
+  ChatMessage _fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
     return ChatMessage(
-        id: doc.id,
-        text: data['text'],
-        createdAt: DateTime.parse(data['createdAt']),
-        userId: data['userId'],
-        userName: data['userName'],
-        userImageURL: data['userImageURL']);
+        id: doc.data()!.containsKey('id')  ? doc.id : '',
+        text:  doc.data()!.containsKey('text') ? doc['text'] : '',
+        createdAt:  doc.data()!.containsKey('createdAt')  ? DateTime.parse(doc['createdAt']) : DateTime.now(),
+        userId:  doc.data()!.containsKey('userId') ? doc['userId'] : '',
+        userName:  doc.data()!.containsKey('userName') ? doc['userName'] : '',
+        userImageURL:  doc.data()!.containsKey('userImageURL') ? doc['userImageURL'] : '');
+  }
+
+  // CHATMESSAGE -> MAP <STRING, DYNAMIC>
+  Map<String, dynamic> _toFirestore(ChatMessage message, SetOptions? options) {
+    return {
+      ' text': message.text,
+      'createdAt': message.createdAt.toIso8601String(),
+      ' userId': message.userId,
+      ' userName': message.userName,
+      'userImageURL': message.userImageURL
+    };
   }
 }
