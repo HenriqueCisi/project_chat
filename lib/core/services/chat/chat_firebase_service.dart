@@ -10,7 +10,19 @@ class ChatFirebaseService implements ChatService {
 
   @override
   Stream<List<ChatMessage>> messageStream() {
-    return const Stream<List<ChatMessage>>.empty();
+    final store = FirebaseFirestore.instance;
+
+    final snapshots = store
+        .collection('chat')
+        .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
+        .orderBy('createdAt')
+        .snapshots();
+
+    return snapshots.map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+    });
   }
 
   @override
@@ -39,21 +51,24 @@ class ChatFirebaseService implements ChatService {
   ChatMessage _fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
     return ChatMessage(
-        id: doc.data()!.containsKey('id')  ? doc.id : '',
-        text:  doc.data()!.containsKey('text') ? doc['text'] : '',
-        createdAt:  doc.data()!.containsKey('createdAt')  ? DateTime.parse(doc['createdAt']) : DateTime.now(),
-        userId:  doc.data()!.containsKey('userId') ? doc['userId'] : '',
-        userName:  doc.data()!.containsKey('userName') ? doc['userName'] : '',
-        userImageURL:  doc.data()!.containsKey('userImageURL') ? doc['userImageURL'] : '');
+        id: doc.data()!.containsKey('id') ? doc.id : '',
+        text: doc.data()!.containsKey('text') ? doc['text'] : '',
+        createdAt: doc.data()!.containsKey('createdAt')
+            ? DateTime.parse(doc['createdAt'])
+            : DateTime.now(),
+        userId: doc.data()!.containsKey('userId') ? doc['userId'] : '',
+        userName: doc.data()!.containsKey('userName') ? doc['userName'] : '',
+        userImageURL:
+            doc.data()!.containsKey('userImageURL') ? doc['userImageURL'] : '');
   }
 
   // CHATMESSAGE -> MAP <STRING, DYNAMIC>
   Map<String, dynamic> _toFirestore(ChatMessage message, SetOptions? options) {
     return {
-      ' text': message.text,
+      'text': message.text,
       'createdAt': message.createdAt.toIso8601String(),
-      ' userId': message.userId,
-      ' userName': message.userName,
+      'userId': message.userId,
+      'userName': message.userName,
       'userImageURL': message.userImageURL
     };
   }
